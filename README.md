@@ -3,6 +3,6 @@ BookBank
 
 Book Python 3.2 database gui shit thing for school
 
-# Dependencies
+## Dependencies
 * Python 3.2
 * SQLAlchemy 0.7
