@@ -20,6 +20,7 @@ class Leerling(Base):
     fullname = Column(String(50))
     year = Column(Integer)
 
+    # er is een default constructor, maar ok ..
     def __init__(self, fullname, year):
         self.fullname = fullname
         self.year = year
@@ -47,7 +48,9 @@ class Boekenlijst(Base):
 
 # maakt de tables indien deze nog niet bestaan 
 Base.metadata.create_all(engine) 
-    
+
+new_leerling = Leerling('vollenaam', 3)
+
 Session = sessionmaker(bind=engine)
 print('session bound to engine')
 
