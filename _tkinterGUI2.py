@@ -1,7 +1,10 @@
 import tkinter as tk
-import sqlalchemy
 
-# class holds widgets and their functions and assets
+import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+# boek applicatie, bevat alle assets van de gui (knoppen, labels, etc.)
 class BookApplication(tk.Frame):
 
     # Init constructor
@@ -120,6 +123,12 @@ class BookApplication(tk.Frame):
         #status_frame.grid(row=2, column=0)
 
 
+# leerling table #
+class leerling():
+    
+
+
+# MAIN BELOW #
 root = tk.Tk()
 root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth()-20,root.winfo_screenheight()-60))
 root.wm_title("Boeken bank - Cygnus Gymnasium Pieter Nieuwland College  ")
