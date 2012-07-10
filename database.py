@@ -17,7 +17,7 @@ class Leerling(Base):
 
     # Leerling nummer, volle naam en leerjaar
     LLN = Column(Integer, primary_key=True)
-    fullname = Column(String)
+    fullname = Column(String(50))
     year = Column(Integer)
 
     def __init__(self, fullname, year):
@@ -33,8 +33,8 @@ class Boekenlijst(Base):
 
     # Boek isbn, naam, versie en leerjaar
     ISBN = Column(Integer, primary_key=True)
-    name = Column(String)
-    version = Column(String)
+    name = Column(String(50))
+    version = Column(String(10))
     year = (Integer)
 
     def __init__(self, name, version, year):
@@ -44,8 +44,11 @@ class Boekenlijst(Base):
 
     def __repr__(self):
         return "<Boekenlijst('%s', '%s', '%i')>" % (self.name, self.version, self.year)
-    
+
+# maakt de tables indien deze nog niet bestaan 
+Base.metadata.create_all(engine) 
     
 Session = sessionmaker(bind=engine)
 print('session bound to engine')
+
 
