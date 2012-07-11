@@ -1,7 +1,9 @@
 BookBank
 ========
 
-Book Python 3.2 database gui shit thing for school
+TODO:
+- knoppen gekoppeld aan sqlalchemy issues.
+- enkele velden/labels toegevoegd aan de tkinter gui
 
 ## Dependencies
 * Python 3.2
