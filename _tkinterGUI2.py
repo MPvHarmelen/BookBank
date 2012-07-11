@@ -183,8 +183,8 @@ class BookApplication(tk.Frame):
 		
         lost_button = tk.Button(self, text='BOEK VERLOREN', height=5, width=15, activebackground='#787878', command=lost)
         lost_button.grid(row=4, column=13, padx=400, pady=2, sticky=tk.E)
-# END BOEK BANK USER INTERFACE  #
-# # # # # # # # # # # # # # # # #
+        # END BOEK BANK USER INTERFACE  #
+        # # # # # # # # # # # # # # # # #
 
 
 		
@@ -192,7 +192,7 @@ class BookApplication(tk.Frame):
 # MAIN BELOW  #
 
 
-# Maak engine met database adres. #
+# Maak engine met database adres (intern). #
 engine = create_engine('sqlite:///:memory:', echo=True)
 engine.execute('select 1').scalar()
 
