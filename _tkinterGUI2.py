@@ -6,10 +6,11 @@
 
 import tkinter as tk
 
-import sqlalchemy
+#import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.connectors import mysqldb 
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -55,6 +56,18 @@ class Leerling(Base):
 # # # # # # # # # # # #
 
 
+# Leerling object, gemaakt door de 'Zoek' button om een sessie te starten
+class newStudentObj():
+    booksGiven = None
+    booksReturned = None
+
+    #books missing is booksgiven - booksreturned
+    booksMissing
+
+    #stacks if books are damaged or lost
+    payPrice = None
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # BOEK BANK USER INTERFACE				#
 # bevat alle assets van de gui (knoppen, labels, etc.)  #
@@ -73,11 +86,11 @@ class BookApplication(tk.Frame):
 		
         # nr_field bevat het leerling nummer
         def search():
-            Session = sessionmaker(bind=engine)
-            namy = Session.query(Leerling).filter_by(LLN=nr_field.get())
+            #Session = sessionmaker(bind=engine)
+            #namy = Session.query().filter_by(LLN=nr_field.get())
             #print(namy)
             # ZET HIERONDER NAAM A.D.H.V HET LEERLING NUMMER
-            name.set(nr_field.get())
+            name.set('Joey Toppin')
             # UNCOMMENT HIERONDER ALS JE LIEVER HEBT DAT HET VELD GECLEARD WORDT NA EEN ZOEK ACTIE
             #nr_field.delete(0, tk.END)
 
@@ -123,58 +136,55 @@ class BookApplication(tk.Frame):
         def reportBug():
             print('Fout melden')
 
-		# # # # # # #
-        # MENU BAR  #
-		menu = tk.Menu(self)
-		root.config(menu=menu)
-		filemenu = tk.Menu(menu)
-		menu.add_cascade(label='Opties', menu=filemenu)
-		filemenu.add_command(label='Bestellen', command=order)
-		filemenu.add_command(label='Overzicht leerling', command=report)
-		filemenu.add_command(label='Instellingen', command=settings)
+        menu = tk.Menu(self)
+        root.config(menu=menu)
+        filemenu = tk.Menu(menu)
+        menu.add_cascade(label='Opties', menu=filemenu)
+        filemenu.add_command(label='Bestellen', command=order)
+        filemenu.add_command(label='Overzicht leerling', command=report)
+        filemenu.add_command(label='Instellingen', command=settings)
 
-		helpmenu = tk.Menu(menu)
-		menu.add_cascade(label='Help', menu=helpmenu)
-		helpmenu.add_command(label='Versie', command=getVersion)
-		helpmenu.add_command(label='Fout melden', command=reportBug)
-        
-		
+        helpmenu = tk.Menu(menu)
+        menu.add_cascade(label='Help', menu=helpmenu)
+        helpmenu.add_command(label='Versie', command=getVersion)
+        helpmenu.add_command(label='Fout melden', command=reportBug)        
+            
         # # # # # #
         # LABELS  #
-        
-		# Student number. #
-		self.StudentNr = tk.Label(self, text='LEERLING NR.:').grid(row=0, column=0)
-		# Student name. #
-		name = tk.StringVar()
-		name.set(' ')
-		self.StudentNa = tk.Label(self, text='LEERLING NAAM:').grid(row=1, column=0)
-		self.Name = tk.Label(self, textvariable=name, width=25).grid(row=1,column=1)
+            
+        # Student number. #
+        self.StudentNr = tk.Label(self, text='LEERLING NR.:').grid(row=0, column=0)
+        # Student name. #
+        name = tk.StringVar()
+        name.set(' ')
+        self.StudentNa = tk.Label(self, text='LEERLING NAAM:').grid(row=1, column=0)
+        self.Name = tk.Label(self, textvariable=name, width=25).grid(row=1,column=1)
 
-		
+                    
         # Image. #
-		imgLabel = tk.Label(self)
-	
-		# # # # # # # # #
-		# INPUT FIELDS  #
-		nr_field = tk.Entry(self, width=100)
-		nr_field.grid(row=0, column=1, columnspan=10, padx=12, sticky = tk.E)
+        imgLabel = tk.Label(self)
+            
+        # # # # # # # # #
+        # INPUT FIELDS  #
+        nr_field = tk.Entry(self, width=100)
+        nr_field.grid(row=0, column=1, columnspan=10, padx=12, sticky = tk.E)
 
-		book_return_field = tk.Entry(self, width=100)
-		#book_return_field.grid(row=2, column=1, columnspan=10, padx=12, sticky = tk.E)
-	
-		search_button = tk.Button(self, text='ZOEKEN', height=5, width=15, activebackground='#787878', command=search)
-		search_button.grid(row=0, column=13, padx=400, pady=2, sticky=tk.E)
-		
-		pickup_button = tk.Button(self, text='BOEK AFGEVEN',  height=5, width=15, activebackground='#787878', command=pickup)
-		pickup_button.grid(row=2, column=13, padx=400, pady=2, sticky=tk.E)
+        book_return_field = tk.Entry(self, width=100)
+        #book_return_field.grid(row=2, column=1, columnspan=10, padx=12, sticky = tk.E)
+            
+        search_button = tk.Button(self, text='ZOEKEN', height=5, width=15, activebackground='#787878', command=search)
+        search_button.grid(row=0, column=13, padx=400, pady=2, sticky=tk.E)
+                    
+        pickup_button = tk.Button(self, text='BOEK AFGEVEN',  height=5, width=15, activebackground='#787878', command=pickup)
+        pickup_button.grid(row=2, column=13, padx=400, pady=2, sticky=tk.E)
 
-		returns_button = tk.Button(self, text='BOEK INNEMEN', height=5, width=15, activebackground='#787878', command=returns)
-		returns_button.grid(row=3, column=13, padx=400, pady=2, sticky=tk.E)
+        returns_button = tk.Button(self, text='BOEK INNEMEN', height=5, width=15, activebackground='#787878', command=returns)
+        returns_button.grid(row=3, column=13, padx=400, pady=2, sticky=tk.E)
 
-		lost_button = tk.Button(self, text='BOEK VERLOREN', height=5, width=15, activebackground='#787878', command=lost)
-		lost_button.grid(row=4, column=13, padx=400, pady=2, sticky=tk.E)
-        # END BOEK BANK USER INTERFACE  #
-        # # # # # # # # # # # # # # # # #
+        lost_button = tk.Button(self, text='BOEK VERLOREN', height=5, width=15, activebackground='#787878', command=lost)
+        lost_button.grid(row=4, column=13, padx=400, pady=2, sticky=tk.E)
+    # END BOEK BANK USER INTERFACE  #
+    # # # # # # # # # # # # # # # # #
 
 
 		
@@ -184,16 +194,14 @@ class BookApplication(tk.Frame):
 
 # Maak engine met database adres (intern). #
 engine = create_engine('sqlite:///:memory:', echo=True)
-engine.execute('select 1').scalar()
-
+#engine = create_engine('mysql:///habibjx56_boek:nexY7te0@leerik.nl/habibjx56_boek', echo=True)
+#engine.execute('select 1').scalar()
 
 # Maakt de tables indien deze nog niet bestaan. #
 Base.metadata.create_all(engine)
 
-
 # Test leerling. #
 # new_leerling = Leerling('vollenaam', 3)
-
 
 # Call user interface. #
 root = tk.Tk()
