@@ -56,23 +56,22 @@ class Leerling(Base):
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# BOEK BANK USER INTERFACE								#
+# BOEK BANK USER INTERFACE				#
 # bevat alle assets van de gui (knoppen, labels, etc.)  #
 class BookApplication(tk.Frame):
 	
-	# # # # # # # # #
+    # # # # # # # # #
     # CONSTRUCTOR   #
     def __init__(self, master=None):
         tk.Frame.__init__(self, master, width=100, height=500)
         self.grid()
         self.createWidgets()
 		
-	# # # # # # # # # # #
+    # # # # # # # # # # #
     # WIDGET CREATION   #
     def createWidgets(self):
 		
-		# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-        # WIDGET FUNCTIONS, they have acces to the widgets so no parameters required  #
+        # nr_field bevat het leerling nummer
         def search():
 
             Session = sessionmaker(bind=engine)
@@ -126,7 +125,7 @@ class BookApplication(tk.Frame):
             print('Fout melden')
 		
 		
-		# # # # # # #
+	# # # # # # #
         # MENU BAR  #
         menu = tk.Menu(self)
         root.config(menu=menu)
@@ -145,7 +144,7 @@ class BookApplication(tk.Frame):
         # # # # # #
         # LABELS  #
         
-		# Student number. #
+	# Student number. #
         self.StudentNr = tk.Label(self, text='LEERLING NR.:').grid(row=0, column=0)
         # Student name. #
         name = tk.StringVar()
@@ -158,20 +157,20 @@ class BookApplication(tk.Frame):
         imgLabel = tk.Label(self)
 		
 		
-		# # # # # # # # #
+	# # # # # # # # #
         # INPUT FIELDS  #
         nr_field = tk.Entry(self, width=100)
         nr_field.grid(row=0, column=1, columnspan=10, padx=12, sticky=tk.E)
 		
 		
         #book_isbn = tk.Entry(self)  
-		# # # # # # # # #
+	# # # # # # # # #
         # INNER FRAMES  #
         #color = '#f8f8f8'
         #status_frame = tk.Frame(self, height=500, width=900, bd=2, bg=color)
         #status_frame.grid(row=2, column=0)
         
-		# # # # # #
+	# # # # # #
         # BUTTONS #
         search_button = tk.Button(self, text='ZOEKEN', height=5, width=15, activebackground='#787878', command=search)
         search_button.grid(row=0, column=13, padx=400, pady=2, sticky=tk.E)
