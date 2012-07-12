@@ -10,7 +10,7 @@ import tkinter as tk
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.connectors import mysqldb 
+from sqlalchemy.connectors import mysqldb
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -23,7 +23,7 @@ Base = declarative_base()
 class Boekenlijst(Base):
     __tablename__ = 'boekenlijst1'
 
-    # Boek isbn, code, naam, versie en leerjaar 
+    # Boek isbn, code, naam, versie en leerjaar
     ISBN = Column(Integer, primary_key=True)
     code = Column(Integer)
     name = Column(String(100))
@@ -68,22 +68,22 @@ class newStudentObj():
     payPrice = None
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # BOEK BANK USER INTERFACE				#
 # bevat alle assets van de gui (knoppen, labels, etc.)  #
 class BookApplication(tk.Frame):
-	
+
     # # # # # # # # #
     # CONSTRUCTOR   #
     def __init__(self, master=None):
         tk.Frame.__init__(self, master, width=100, height=500)
         self.grid()
         self.createWidgets()
-		
+
     # # # # # # # # # # #
     # WIDGET CREATION   #
     def createWidgets(self):
-		
+
         # nr_field bevat het leerling nummer
         def search():
             #Session = sessionmaker(bind=engine)
@@ -118,7 +118,7 @@ class BookApplication(tk.Frame):
             # if added to student profile, clear it
             # if removed from student profile, add it
             print('Laatste actie ongedaan gemaakt')
-            
+
         def order():
             print('Boek(en) bestellen')
             # show order frame
@@ -132,7 +132,7 @@ class BookApplication(tk.Frame):
         def getVersion():
             print('Versie 1.0')
             #print op ext. frame
-            
+
         def reportBug():
             print('Fout melden')
 
@@ -147,11 +147,11 @@ class BookApplication(tk.Frame):
         helpmenu = tk.Menu(menu)
         menu.add_cascade(label='Help', menu=helpmenu)
         helpmenu.add_command(label='Versie', command=getVersion)
-        helpmenu.add_command(label='Fout melden', command=reportBug)        
-            
+        helpmenu.add_command(label='Fout melden', command=reportBug)
+
         # # # # # #
         # LABELS  #
-            
+
         # Student number. #
         self.StudentNr = tk.Label(self, text='LEERLING NR.:').grid(row=0, column=0)
         # Student name. #
@@ -160,10 +160,10 @@ class BookApplication(tk.Frame):
         self.StudentNa = tk.Label(self, text='LEERLING NAAM:').grid(row=1, column=0)
         self.Name = tk.Label(self, textvariable=name, width=25).grid(row=1,column=1)
 
-                    
+
         # Image. #
         imgLabel = tk.Label(self)
-            
+
         # # # # # # # # #
         # INPUT FIELDS  #
         nr_field = tk.Entry(self, width=100)
@@ -171,10 +171,10 @@ class BookApplication(tk.Frame):
 
         book_return_field = tk.Entry(self, width=100)
         #book_return_field.grid(row=2, column=1, columnspan=10, padx=12, sticky = tk.E)
-            
+
         search_button = tk.Button(self, text='ZOEKEN', height=5, width=15, activebackground='#787878', command=search)
         search_button.grid(row=0, column=13, padx=400, pady=2, sticky=tk.E)
-                    
+
         pickup_button = tk.Button(self, text='BOEK AFGEVEN',  height=5, width=15, activebackground='#787878', command=pickup)
         pickup_button.grid(row=2, column=13, padx=400, pady=2, sticky=tk.E)
 
@@ -187,8 +187,8 @@ class BookApplication(tk.Frame):
     # # # # # # # # # # # # # # # # #
 
 
-		
-# # # # # # # #		
+
+# # # # # # # #
 # MAIN BELOW  #
 
 
