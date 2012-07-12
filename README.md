@@ -1,10 +1,16 @@
 BookBank
 ========
 
-TODO:
-- knoppen gekoppeld aan sqlalchemy issues.
-- enkele velden/labels toegevoegd aan de tkinter gui
+## To do
+- Write initial database structure
+  - Decide what goes where, what about:
+    - Books you don't have to give back
+    - Books you shouldn't have but do
+    - Books in really bad condition
+  - Decide what relates to what, mainly students to books
+- Link buttons to database
+- Add some fields/labels to the tkinter gui
 
 ## Dependencies
-* Python 3.2
-* SQLAlchemy 0.7
+- Python 3.2
+- SQLAlchemy 0.7
