@@ -58,8 +58,8 @@ class Boekenlijst(Base):
         return "<Boekenlijst('%s', '%s', '%i')>" % (self.name, self.version, self.year)
 
 
-# maakt de tables indien deze nog niet bestaan 
-Base.metadata.create_all(engine) 
+# maakt de tables indien deze nog niet bestaan
+Base.metadata.create_all(engine)
 
 
 # test leerling
