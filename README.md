@@ -2,6 +2,7 @@ BookBank
 ========
 
 ## To do
+- Write your python code in Eglish!
 - Write initial database structure
   - Decide what goes where, what about:
     - Books you don't have to give back
