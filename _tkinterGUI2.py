@@ -62,7 +62,7 @@ class newStudentObj():
     booksReturned = None
 
     #books missing is booksgiven - booksreturned
-    booksMissing
+    #booksMissing
 
     #stacks if books are damaged or lost
     payPrice = None
