@@ -1,8 +1,6 @@
 # -*- coding: cp1252 -*-
 # todo:
-# buttons koppelen
-# database implementeren
-# serial i/o implementeren
+# database connectie
 
 import tkinter as tk
 
@@ -16,14 +14,9 @@ from sqlalchemy.connectors import mysqldb
 
 
 money = 0
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # #
-# shall contain a catalog of all the Table objects  #
 Base = declarative_base()
 
-
-# # # # # # # # # # # # #
-# BEGIN DATABASE TABLES #
+# Database tables
 class Boekenlijst(Base):
     __tablename__ = 'boekenlijst1'
 
@@ -56,19 +49,15 @@ class Leerling(Base):
 
     def __repr__(self):
         return "<Leerling('%s','%i')>" % (self.fullname, self.year)
-# END DATABASE TABLES #
-# # # # # # # # # # # #
+
+
 
 class newStudentObj():
     booksGiven = None
     booksReturned = None
-
     #books missing is booksgiven - booksreturned
     booksMissing = None
     #booksMissing
-
-    #stacks if books are damaged or lost
-    payPrice = None
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -80,10 +69,6 @@ class BookApplication(tk.Frame):
         tk.Frame.__init__(self, master, width=100, height=500)
         self.grid()
         self.createWidgets()
-		
-    def createWidgets(self):
-
-        money = 0
         
     def createWidgets(self):
 
