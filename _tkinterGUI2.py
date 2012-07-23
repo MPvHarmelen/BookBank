@@ -10,8 +10,11 @@ import tkinter as tk
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.connectors import mysqldb 
+#from sqlalchemy.connectors import mysqldb
+from sqlalchemy.dialects.mysql import *
 
+
+money = 0
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # shall contain a catalog of all the Table objects  #
@@ -62,7 +65,7 @@ class newStudentObj():
     booksReturned = None
 
     #books missing is booksgiven - booksreturned
-    booksMissing
+    booksMissing = None
 
     #stacks if books are damaged or lost
     payPrice = None
@@ -72,7 +75,7 @@ class newStudentObj():
 # BOEK BANK USER INTERFACE				#
 # bevat alle assets van de gui (knoppen, labels, etc.)  #
 class BookApplication(tk.Frame):
-	
+    
     # # # # # # # # #
     # CONSTRUCTOR   #
     def __init__(self, master=None):
@@ -80,43 +83,52 @@ class BookApplication(tk.Frame):
         self.grid()
         self.createWidgets()
 		
-    # # # # # # # # # # #
-    # WIDGET CREATION   #
     def createWidgets(self):
-		
-        # nr_field bevat het leerling nummer
+
+        money = 0
+        
         def search():
+            money_var.set(' ')
             #Session = sessionmaker(bind=engine)
-            #namy = Session.query().filter_by(LLN=nr_field.get())
-            #print(namy)
-            # ZET HIERONDER NAAM A.D.H.V HET LEERLING NUMMER
-            name.set('Joey Toppin')
-            # UNCOMMENT HIERONDER ALS JE LIEVER HEBT DAT HET VELD GECLEARD WORDT NA EEN ZOEK ACTIE
+            #llname = Session.query().filter_by(LLN=nr_field.get())
+            #print(llname)
+            #name.set(llname)
             #nr_field.delete(0, tk.END)
 
         def pickup():
             print('Boek afgeven')
+            book = book_pickup_field.get()
+            print(book)
             # CHECK HET HUIDIGE BOEK NAAR 'GROEN'
             # check picked up (add to student profile)
+            book_pickup_field.delete(0, tk.END)
 
         def returns():
             print('Boek innemen')
+            returned_book = book_return_field.get()
+            book_return_field.delete(0, tk.END)
             # CHECK HET HUIDIGE BOEK NAAR 'GEEL' // NODIG = ROOD - YES // NO
 
         def extend():
             print('Boek verlengen')
 
         def lost():
-            # BOEK VERLOREN/SCHADE, BOEK EEN BOETE OP LEERLING NAAM
-            print('Boek verloren')
-			#maak object van leerling en boek een boete die stackt en uiteindelijk prijs uitrekent
-            #lost_frame = tk.Frame(root, height=10, width=20, bd=2, bg='#00ff00')
-            #lost_frame.grid(row=0, column=2)
+            global money
+            
+            lost_book = book_return_field.get()
+            book_return_field.delete(0, tk.END)
+            
+            print('verloren boek: ' + lost_book)
+            money += 5
+            money_var.set('€' + str(money))
 
         def undo():
             # undo last action
             # if added to student profile, clear it
             # if removed from student profile, add it
+            # if booked a 'boete', minus it
+            # if booked a lost book ok, set it false
+            # etc.
             print('Laatste actie ongedaan gemaakt')
             
         def order():
@@ -136,6 +148,10 @@ class BookApplication(tk.Frame):
         def reportBug():
             print('Fout melden')
 
+        def calcMoney():
+            print('Het te betalen bedrag')
+
+        # Menu
         menu = tk.Menu(self)
         root.config(menu=menu)
         filemenu = tk.Menu(menu)
@@ -149,29 +165,39 @@ class BookApplication(tk.Frame):
         helpmenu.add_command(label='Versie', command=getVersion)
         helpmenu.add_command(label='Fout melden', command=reportBug)        
             
-        # # # # # #
-        # LABELS  #
+        # Labels 
             
-        # Student number. #
+        # leerling nummer label
         self.StudentNr = tk.Label(self, text='LEERLING NR.:').grid(row=0, column=0)
-        # Student name. #
+
+        # leerling naam label
         name = tk.StringVar()
         name.set(' ')
         self.StudentNa = tk.Label(self, text='LEERLING NAAM:').grid(row=1, column=0)
         self.Name = tk.Label(self, textvariable=name, width=25).grid(row=1,column=1)
 
+        # te betalen bedrag
+        money_var = tk.StringVar()
+        money_var.set(' ')
+        money_label = tk.Label(self, text='TE BETALEN BERAG:').grid(row=4, column=0, sticky=tk.E)
+        money_var_label = tk.Label(self, textvariable=money_var, width=5).grid(row=4,column=1, sticky=tk.W)
+
                     
-        # Image. #
+        # Image 
         imgLabel = tk.Label(self)
             
-        # # # # # # # # #
-        # INPUT FIELDS  #
+
+        # Input Fields
         nr_field = tk.Entry(self, width=100)
         nr_field.grid(row=0, column=1, columnspan=10, padx=12, sticky = tk.E)
 
+        book_pickup_field = tk.Entry(self, width=100)
+        book_pickup_field.grid(row=2, column=1, columnspan=10, padx=12, sticky = tk.E)
+
         book_return_field = tk.Entry(self, width=100)
-        #book_return_field.grid(row=2, column=1, columnspan=10, padx=12, sticky = tk.E)
-            
+        book_return_field.grid(row=3, column=1, columnspan=10, padx=12, sticky = tk.E)
+
+        # Buttons 
         search_button = tk.Button(self, text='ZOEKEN', height=5, width=15, activebackground='#787878', command=search)
         search_button.grid(row=0, column=13, padx=400, pady=2, sticky=tk.E)
                     
@@ -183,33 +209,22 @@ class BookApplication(tk.Frame):
 
         lost_button = tk.Button(self, text='BOEK VERLOREN', height=5, width=15, activebackground='#787878', command=lost)
         lost_button.grid(row=4, column=13, padx=400, pady=2, sticky=tk.E)
-    # END BOEK BANK USER INTERFACE  #
-    # # # # # # # # # # # # # # # # #
 
 
-		
-# # # # # # # #		
-# MAIN BELOW  #
 
-
-# Maak engine met database adres (intern). #
+# Main #
 engine = create_engine('sqlite:///:memory:', echo=True)
-#engine = create_engine('mysql:///habibjx56_boek:nexY7te0@leerik.nl/habibjx56_boek', echo=True)
+#engine = create_engine('mysql+mysqlconnector:///habibjx56_boek:nexY7te0@leerik.nl/habibjx56_boek?charset=utf8&use_unicode=0', echo=True)
 #engine.execute('select 1').scalar()
 
-# Maakt de tables indien deze nog niet bestaan. #
 Base.metadata.create_all(engine)
 
-# Test leerling. #
-# new_leerling = Leerling('vollenaam', 3)
+# test_leerling = Leerling('vollenaam', 3)
 
-# Call user interface. #
+# interface
 root = tk.Tk()
 root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth()-20,root.winfo_screenheight()-60))
 root.wm_title("Boeken bank - Cygnus Gymnasium Pieter Nieuwland College  ")
 app = BookApplication(master=root)
 app.mainloop()
 
-
-# END MAIN  #
-# # # # # # #
