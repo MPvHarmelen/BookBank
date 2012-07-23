@@ -1,75 +1,53 @@
-import sqlalchemy
-
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
 
 
-
+# create engine, Session and Base
 engine = create_engine('sqlite:///:memory:', echo=True)
-engine.execute('select 1').scalar()
-
-# sessie creeëren in button
 Session = sessionmaker(bind=engine)
-print('session bound to engine')
-
-# shall contain a catalog of all the Table objects
 Base = declarative_base()
 
+## student table ##
+class Student(Base):
+    __tablename__ = 'Students'
 
+    # Student id kan be the designation (for the dutch, that's a leerlingnummer)
+    id           = Column(Integer, primary_key=True)
+    first_name   = Column(String(32))
+    # 'insertion' is a poor translation of 'tussenvoegsel'
+    insertion    = Column(String(16))
+    surname      = Column(String(32))
+    year         = Column(Integer)
+    group_letter = Column(String(2))
 
-## leerling table ##
-class Leerling(Base):
-    __tablename__ = 'leerling'
+    def get_fullname(self):
+        return ' '.join((self.first_name, self.insertion, self.surname))
 
-    # Leerling nummer, volle naam en leerjaar
-    LLN = Column(Integer, primary_key=True)
-    fullname = Column(String(50))
-    year = Column(Integer)
-
-    # er is een default constructor, maar ok ..
-    def __init__(self, fullname, year):
-        self.fullname = fullname
-        self.year = year
+    def get_group(self):
+        return str(self.year) + self.group_letter
 
     def __repr__(self):
-        return "<Leerling('%s','%i')>" % (self.fullname, self.year)
+        return '<Student({}, {})>'.format(self.get_fullname(), self.get_group())
 
+### ISBN can never be the pk, because all books that are the same, have the same
+### ISBN. However, the barcode is always unique, therefore it will be the pk.
 
-
-## boekenlijst table (leerjaar 1) ##
-class Boekenlijst(Base):
-    __tablename__ = 'boekenlijst1'
+# Books table (all years)
+class Book(Base):
+    __tablename__ = 'Books'
 
     # Boek isbn, naam, versie en leerjaar
-    ISBN = Column(Integer, primary_key=True)
-    code = Column(Integer)
-    name = Column(String(100))
+    barcode = Column(Integer, primary_key=True)
+    ISBN    = Column(Integer)
+    name    = Column(String(100))
+    year    = Column(Integer)
+    # What is this version thing?
     version = Column(String(10))
-    year = (Integer)
-
-    def __init__(self, name, version, year):
-        self.name = name
-        self.version = version
-        self.year = year
 
     def __repr__(self):
-        return "<Boekenlijst('%s', '%s', '%i')>" % (self.name, self.version, self.year)
+        return '<Boekenlijst({}, {}, {})>'.format(self.name, self.version,
+                                                  self.year)
 
-
-# maakt de tables indien deze nog niet bestaan 
-Base.metadata.create_all(engine) 
-
-
-# test leerling
-new_leerling = Leerling('vollenaam', 3)
-#Session.add(new_leerling)
-#Session.commit(new_leerling)
-
-#open session
-#search button query for student nr
-#return fullname column
-
-
-
+# Makes the tables if they don't already exist.
+Base.metadata.create_all(engine)
