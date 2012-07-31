@@ -16,14 +16,15 @@ class Student(Base):
     id = Column(Integer, primary_key=True)
     first_name = Column(String(32))
     # 'insertion' is a poor translation of 'tussenvoegsel'
-    insertion = Column(String(16))
+    # inbetweener is a much cooler word, so we'll use that
+    inbetweener = Column(String(16))
     surname = Column(String(32))
     year = Column(Integer)
     group_letter = Column(String(2))
     books = relationship('Child', backref='parent')
 
     def get_fullname(self):
-        return ' '.join((self.first_name, self.insertion, self.surname))
+        return ' '.join((self.first_name, self.inbetweener, self.surname))
 
     def get_group(self):
         return str(self.year) + self.group_letter
