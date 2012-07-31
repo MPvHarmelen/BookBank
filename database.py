@@ -51,3 +51,55 @@ class Book(Base):
 
 # Makes the tables if they don't already exist.
 Base.metadata.create_all(engine)
+
+### Shit cut from _tkinterGUI2.py:
+#engine = create_engine('sqlite:///:memory:', echo=True)
+##engine = create_engine('mysql+mysqlconnector:///habibjx56_boek:nexY7te0@leerik.nl/habibjx56_boek?charset=utf8&use_unicode=0', echo=True)
+##engine.execute('select 1').scalar()
+#
+#Base.metadata.create_all(engine)
+#
+#Base = declarative_base()
+#
+## Database tables
+#class Boekenlijst(Base):
+#    __tablename__ = 'boekenlijst1'
+#
+#    # Boek isbn, code, naam, versie en leerjaar
+#    ISBN = Column(Integer, primary_key=True)
+#    code = Column(Integer)
+#    name = Column(String(100))
+#    version = Column(String(10))
+#    year = (Integer)
+#
+#    def __init__(self, name, version, year):
+#        self.name = name
+#        self.version = version
+#        self.year = year
+#
+#    def __repr__(self):
+#        return "<Boekenlijst('%i', '%s', '%s', '%i')>" % (self.code, self.name, self.version, self.year)
+#class Leerling(Base):
+#    __tablename__ = 'leerling'
+#
+#    # Leerling nummer, volle naam en leerjaar
+#    LLN = Column(Integer, primary_key=True)
+#    fullname = Column(String(50))
+#    year = Column(Integer)
+#
+#    # er is een default constructor, maar ok ..
+#    def __init__(self, fullname, year):
+#        self.fullname = fullname
+#        self.year = year
+#
+#    def __repr__(self):
+#        return "<Leerling('%s','%i')>" % (self.fullname, self.year)
+#
+#
+#
+#class newStudentObj():
+#    booksGiven = None
+#    booksReturned = None
+#    #books missing is booksgiven - booksreturned
+#    booksMissing = None
+#    #booksMissing

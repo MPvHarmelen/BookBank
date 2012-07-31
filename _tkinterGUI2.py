@@ -11,54 +11,10 @@ from sqlalchemy.orm import sessionmaker
 #from sqlalchemy.connectors import mysqldb
 from sqlalchemy.dialects.mysql import *
 from sqlalchemy.connectors import mysqldb
+from database import *
 
 
 money = 0
-Base = declarative_base()
-
-# Database tables
-class Boekenlijst(Base):
-    __tablename__ = 'boekenlijst1'
-
-    # Boek isbn, code, naam, versie en leerjaar
-    ISBN = Column(Integer, primary_key=True)
-    code = Column(Integer)
-    name = Column(String(100))
-    version = Column(String(10))
-    year = (Integer)
-
-    def __init__(self, name, version, year):
-        self.name = name
-        self.version = version
-        self.year = year
-
-    def __repr__(self):
-        return "<Boekenlijst('%i', '%s', '%s', '%i')>" % (self.code, self.name, self.version, self.year)
-class Leerling(Base):
-    __tablename__ = 'leerling'
-
-    # Leerling nummer, volle naam en leerjaar
-    LLN = Column(Integer, primary_key=True)
-    fullname = Column(String(50))
-    year = Column(Integer)
-
-    # er is een default constructor, maar ok ..
-    def __init__(self, fullname, year):
-        self.fullname = fullname
-        self.year = year
-
-    def __repr__(self):
-        return "<Leerling('%s','%i')>" % (self.fullname, self.year)
-
-
-
-class newStudentObj():
-    booksGiven = None
-    booksReturned = None
-    #books missing is booksgiven - booksreturned
-    booksMissing = None
-    #booksMissing
-
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # BOEK BANK USER INTERFACE				#
@@ -68,9 +24,9 @@ class BookApplication(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master, width=100, height=500)
         self.grid()
-        self.createWidgets()
-        
-    def createWidgets(self):
+        self.create_widgets()
+
+    def create_widgets(self):
 
         # nr_field bevat het leerling nummer
         def search():
@@ -100,10 +56,10 @@ class BookApplication(tk.Frame):
 
         def lost():
             global money
-            
+
             lost_book = book_return_field.get()
             book_return_field.delete(0, tk.END)
-            
+
             print('verloren boek: ' + lost_book)
             money += 5
             money_var.set('€' + str(money))
@@ -127,14 +83,14 @@ class BookApplication(tk.Frame):
         def settings():
             print('Programma instellingen (kleur)')
 
-        def getVersion():
+        def get_version():
             print('Versie 1.0')
             #print op ext. frame
 
-        def reportBug():
+        def report_bug():
             print('Fout melden')
 
-        def calcMoney():
+        def calc_money():
             print('Het te betalen bedrag')
 
         # Menu
@@ -148,8 +104,8 @@ class BookApplication(tk.Frame):
 
         helpmenu = tk.Menu(menu)
         menu.add_cascade(label='Help', menu=helpmenu)
-        helpmenu.add_command(label='Versie', command=getVersion)
-        helpmenu.add_command(label='Fout melden', command=reportBug)        
+        helpmenu.add_command(label='Versie', command=get_version)
+        helpmenu.add_command(label='Fout melden', command=report_bug)
 
         # Student number. #
         self.StudentNr = tk.Label(self, text='LEERLING NR.:').grid(row=0, column=0)
@@ -166,10 +122,10 @@ class BookApplication(tk.Frame):
         money_label = tk.Label(self, text='TE BETALEN BERAG:').grid(row=4, column=0, sticky=tk.E)
         money_var_label = tk.Label(self, textvariable=money_var, width=5).grid(row=4,column=1, sticky=tk.W)
 
-                    
-        # Image 
+
+        # Image
         imgLabel = tk.Label(self)
-            
+
 
         # Input Fields
         nr_field = tk.Entry(self, width=100)
@@ -194,11 +150,7 @@ class BookApplication(tk.Frame):
 
 
 # Main #
-engine = create_engine('sqlite:///:memory:', echo=True)
-#engine = create_engine('mysql+mysqlconnector:///habibjx56_boek:nexY7te0@leerik.nl/habibjx56_boek?charset=utf8&use_unicode=0', echo=True)
-#engine.execute('select 1').scalar()
 
-Base.metadata.create_all(engine)
 
 # test_leerling = Leerling('vollenaam', 3)
 
