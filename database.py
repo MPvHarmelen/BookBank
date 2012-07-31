@@ -2,6 +2,9 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
+#from sqlalchemy.connectors import mysqldb
+from sqlalchemy.dialects.mysql import *
+from sqlalchemy.connectors import mysqldb
 
 # create engine, Session and Base
 engine = create_engine('sqlite:///:memory:', echo=True)

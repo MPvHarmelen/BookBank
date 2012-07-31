@@ -3,14 +3,6 @@
 # database connectie
 
 import tkinter as tk
-
-#import sqlalchemy
-from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-#from sqlalchemy.connectors import mysqldb
-from sqlalchemy.dialects.mysql import *
-from sqlalchemy.connectors import mysqldb
 from database import *
 
 
