@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Column, Integer, String, Foreignkey
+from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -10,16 +10,17 @@ Base = declarative_base()
 
 ## student table ##
 class Student(Base):
-    __tablename__ = 'Students'
+    __tablename__ = 'student'
 
     # Student id kan be the designation (for the dutch, that's a leerlingnummer)
-    id           = Column(Integer, primary_key=True)
-    first_name   = Column(String(32))
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(32))
     # 'insertion' is a poor translation of 'tussenvoegsel'
-    insertion    = Column(String(16))
-    surname      = Column(String(32))
-    year         = Column(Integer)
+    insertion = Column(String(16))
+    surname = Column(String(32))
+    year = Column(Integer)
     group_letter = Column(String(2))
+    books = relationship('Child', backref='parent')
 
     def get_fullname(self):
         return ' '.join((self.first_name, self.insertion, self.surname))
@@ -35,7 +36,7 @@ class Student(Base):
 
 # Books table (all years)
 class Book(Base):
-    __tablename__ = 'Books'
+    __tablename__ = 'book'
 
     # Boek isbn, naam, versie en leerjaar
     barcode = Column(Integer, primary_key=True)
@@ -44,6 +45,7 @@ class Book(Base):
     year    = Column(Integer)
     # What is this version thing?
     version = Column(String(10))
+    student_id = Column(Integer, ForeignKey('student.id'))
 
     def __repr__(self):
         return '<Boekenlijst({}, {}, {})>'.format(self.name, self.version,
