@@ -1,10 +1,10 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
 #from sqlalchemy.connectors import mysqldb
-from sqlalchemy.dialects.mysql import *
-from sqlalchemy.connectors import mysqldb
+#from sqlalchemy.dialects.mysql import *
+#from sqlalchemy.connectors import mysqldb
 
 # create engine, Session and Base
 engine = create_engine('sqlite:///:memory:', echo=True)
@@ -15,14 +15,14 @@ Base = declarative_base()
 class Student(Base):
     __tablename__ = 'student'
 
-    # Student id kan be the designation (for the dutch, that's a leerlingnummer)
+    # Student id can be the designation (for the dutch, that's a leerlingnummer)
     id = Column(Integer, primary_key=True)
-    first_name = Column(String(32))
+    first_name = Column(String(32), nullable=False)
     # 'insertion' is a poor translation of 'tussenvoegsel'
     # inbetweener is a much cooler word, so we'll use that
     inbetweener = Column(String(16))
-    surname = Column(String(32))
-    year = Column(Integer)
+    surname = Column(String(32), nullable=False)
+    grade = Column(Integer, nullable=False)
     group_letter = Column(String(2))
     books = relationship('Child', backref='parent')
 
@@ -44,11 +44,11 @@ class Book(Base):
 
     # Boek isbn, naam, versie en leerjaar
     barcode = Column(Integer, primary_key=True)
-    ISBN    = Column(Integer)
-    name    = Column(String(100))
-    year    = Column(Integer)
+    ISBN    = Column(Integer, nullable=False)
+    name    = Column(String(100), nullable=False)
+    purchased = Column(Date, nullable=False)
     # What is this version thing?
-    version = Column(String(10))
+    version = Column(String(10), nullable=False)
     student_id = Column(Integer, ForeignKey('student.id'))
 
     def __repr__(self):
